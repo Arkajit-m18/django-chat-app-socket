@@ -1,0 +1,26 @@
+{% extends 'rooms/room_base.html' %}
+{% block preroom %}
+    <h1>{{ room.name }}</h1>
+    <h2>Member count: {{ room.members.count }}</h2>
+    <div class="content">
+        {% if user in room.members.all %}
+            <a href="{% url 'rooms:leave' slug=room.slug %}" class="btn btn-lg btn-fill btn-warning"><span class="glyphicon glyphicon-remove-circle"></span> Leave</a>
+            <a href="{% url 'chat:room' room_name=room.name %}" class="btn btn-lg btn-fill btn-success"><span class="glyphicon glyphicon-comment"></span> Start Chatting</a>
+        {% else %}
+            <a href="{% url 'rooms:join' slug=room.slug %}" class="btn btn-lg btn-fill btn-warning"><span class="glyphicon glyphicon-ok-circle"></span> Join</a>
+        {% endif %}
+        <a href="{% url 'rooms:edit' slug=room.slug %}" class="btn btn-lg btn-fill btn-success"><span class="glyphicon glyphicon-pencil"></span> Edit Room</a>
+        <a href="{% url 'rooms:delete' slug=room.slug %}" class="btn btn-lg btn-fill btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete Room</a>
+    </div>
+    <hr>
+{% endblock %}
+{% block room_content %}
+    <div class="col-md-4">
+        <h2>List of active members:</h2>
+        <ul class="list-group">
+            {% for member in room.members.all %}
+                <li class="list-group-item">{{ member.username }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
